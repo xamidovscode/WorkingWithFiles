@@ -1,14 +1,22 @@
+import requests
 
+class WebScraping:
 
-# Faylni o'qish rejimida ochish
-file = open("example.txt", "r")   #read rejim
-content = file.read()  # Fayl ichini o'qish
-print(content)
-file.close()  # Faylni yopish
+    def __init__(self, url):
+        self.url = url
 
+    def get_json_data(self):
+        data = requests.get(url=self.url)
+        return data.json().get("results")  # [] ko'p malumot qaytadi
 
-with open("example.txt", "r") as file:
-    content = file.read()
-    print(content)
-# Bu yerda fayl avtomatik yopiladi
+    def copy_data_file(self):
+        datas = self.get_json_data()
+        with open("course.txt", "w") as file:
+            for data in datas:
+                file.write(f"{data.get('title')}\n")
+
+url = "https://admin.soffstudy.uz/api/v1/courses/courses-list/"
+a = WebScraping(url)
+
+print(a.copy_data_file())
 
